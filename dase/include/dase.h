@@ -14,12 +14,9 @@ typedef union {
 	q15 b[2];
 } v2q15_union;
 
-typedef union {
-	a64 a;
-	q31 b[2];
-} a64_union;
-
 void dase_convol(const float *x, int nx, const float *h, int nh, float *y);
+
+void dase_fft_common(float *x, int n, int inv);
 
 #endif
 
