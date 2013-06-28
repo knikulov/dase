@@ -2,6 +2,15 @@
 #define	DASE_H_
 
 #include <stdint.h>
+#include <endian.h>
+
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+ #define	DASE_RE	1
+ #define	DASE_IM	0
+#elif __BYTE_ORDER == __BIG_ENDIAN
+ #define	DASE_RE	0
+ #define	DASE_IM	1
+#endif
 
 typedef	int16_t q15;
 typedef int32_t q31;

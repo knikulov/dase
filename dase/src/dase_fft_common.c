@@ -14,8 +14,8 @@ dase_fft_common(float *x, int n, int inv)
 	fp = x;
 	X = (v2q15_union *)x;
 	for (i = 0; i < n; i++) {
-		X->b[1] = (*fp++) * 32768.0;
-		X->b[0] = (*fp++) * 32768.0;
+		X->b[DASE_RE] = (*fp++) * 32768.0;
+		X->b[DASE_IM] = (*fp++) * 32768.0;
 		X++;
 	}
 
@@ -44,8 +44,8 @@ dase_fft_common(float *x, int n, int inv)
 		float arg;
 
 		arg = M_PI/frame;
-		w.b[1] = 32768.0 * cos(arg);
-		w.b[0] = (inv ? 32768.0 : -32768.0) * sin(arg);
+		w.b[DASE_RE] = 32768.0 * cos(arg);
+		w.b[DASE_IM] = (inv ? 32768.0 : -32768.0) * sin(arg);
 
 		p = X;
 		p2 = X + frame;
@@ -53,34 +53,34 @@ dase_fft_common(float *x, int n, int inv)
 		for (i = 0; i < n; i += (frame << 1)) {
 			v2q15_union s;
 
-			s.b[1] = 32767.0;
-			s.b[0] = 0.0;
+			s.b[DASE_RE] = 32767.0;
+			s.b[DASE_IM] = 0.0;
 
 			for (j = 0; j < frame; j++) {
 				a64 ac0;
 				v2q15_union tmp, sinv;
 
-				sinv.b[0] = s.b[1];
-				sinv.b[1] = s.b[0];
+				sinv.b[DASE_IM] = s.b[DASE_RE];
+				sinv.b[DASE_RE] = s.b[DASE_IM];
 
 				ac0 = 0;
 				ac0 = __builtin_mips_mulsaq_s_w_ph(ac0, p2->a, s.a);
-				tmp.b[1] = __builtin_mips_extr_s_h(ac0, 16);
+				tmp.b[DASE_RE] = __builtin_mips_extr_s_h(ac0, 16);
 
 				ac0 = 0;
 				ac0 = __builtin_mips_dpaq_s_w_ph(ac0, p2->a, sinv.a);
-				tmp.b[0] = __builtin_mips_extr_s_h(ac0, 16);
+				tmp.b[DASE_IM] = __builtin_mips_extr_s_h(ac0, 16);
 
 				p2->a = __builtin_mips_subq_s_ph(p->a, tmp.a);
 				p->a  = __builtin_mips_addq_s_ph(p->a,  tmp.a);
 
 				ac0 = 0;
 				ac0 = __builtin_mips_mulsaq_s_w_ph(ac0, w.a, s.a);
-				s.b[1] = __builtin_mips_extr_s_h(ac0, 16);
+				s.b[DASE_RE] = __builtin_mips_extr_s_h(ac0, 16);
 
 				ac0 = 0;
 				ac0 = __builtin_mips_dpaq_s_w_ph(ac0, w.a, sinv.a);
-				s.b[0] = __builtin_mips_extr_s_h(ac0, 16);
+				s.b[DASE_IM] = __builtin_mips_extr_s_h(ac0, 16);
 
 				p++;
 				p2++;
@@ -94,8 +94,8 @@ dase_fft_common(float *x, int n, int inv)
 	X = (v2q15_union *)x + n;
 	for (i = 0; i < n; i++) {
 		--X;
-		*--fp = X->b[0] / 32768.0;
-		*--fp = X->b[1] / 32768.0;
+		*--fp = X->b[DASE_IM] / 32768.0;
+		*--fp = X->b[DASE_RE] / 32768.0;
 	}
 }
 
