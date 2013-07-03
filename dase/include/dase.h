@@ -2,6 +2,20 @@
 #define	DASE_H_
 
 #include <stdint.h>
+#include <endian.h>
+
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+ #define	DASE_RE	1
+ #define	DASE_IM	0
+#elif __BYTE_ORDER == __BIG_ENDIAN
+ #define	DASE_RE	0
+ #define	DASE_IM	1
+#endif
+
+enum {
+	DASE_FFT_DIR  = -1,
+	DASE_FFT_INV  =  1
+};
 
 typedef	int16_t q15;
 typedef int32_t q31;
@@ -14,12 +28,18 @@ typedef union {
 	q15 b[2];
 } v2q15_union;
 
-typedef union {
-	a64 a;
-	q31 b[2];
-} a64_union;
-
 void dase_convol(const float *x, int nx, const float *h, int nh, float *y);
+
+void dase_fft_common(float *x, int n, float inv);
+
+void dase_fft8(float *x, float inv);
+void dase_fft16(float *x, float inv);
+void dase_fft32(float *x, float inv);
+void dase_fft64(float *x, float inv);
+void dase_fft128(float *x, float inv);
+void dase_fft256(float *x, float inv);
+void dase_fft512(float *x, float inv);
+void dase_fft1024(float *x, float inv);
 
 #endif
 
