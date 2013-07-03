@@ -4,7 +4,7 @@
 #include "dase.h"
 
 void
-dase_fft_common(float *x, int n, int inv)
+dase_fft_common(float *x, int n, float inv)
 {
 	int frame;
 	int i, j;
@@ -45,7 +45,7 @@ dase_fft_common(float *x, int n, int inv)
 
 		arg = M_PI/frame;
 		w.b[DASE_RE] = 32768.0 * cos(arg);
-		w.b[DASE_IM] = (inv ? 32768.0 : -32768.0) * sin(arg);
+		w.b[DASE_IM] = inv * 32768.0 * sin(arg);
 
 		p = X;
 		p2 = X + frame;

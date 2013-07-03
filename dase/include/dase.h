@@ -12,6 +12,11 @@
  #define	DASE_IM	1
 #endif
 
+enum {
+	DASE_FFT_DIR  = -1,
+	DASE_FFT_INV  =  1
+};
+
 typedef	int16_t q15;
 typedef int32_t q31;
 typedef int64_t a64;
@@ -25,7 +30,16 @@ typedef union {
 
 void dase_convol(const float *x, int nx, const float *h, int nh, float *y);
 
-void dase_fft_common(float *x, int n, int inv);
+void dase_fft_common(float *x, int n, float inv);
+
+void dase_fft8(float *x, float inv);
+void dase_fft16(float *x, float inv);
+void dase_fft32(float *x, float inv);
+void dase_fft64(float *x, float inv);
+void dase_fft128(float *x, float inv);
+void dase_fft256(float *x, float inv);
+void dase_fft512(float *x, float inv);
+void dase_fft1024(float *x, float inv);
 
 #endif
 
