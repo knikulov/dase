@@ -1,12 +1,3 @@
-# primitive power function
-function pow(x, p) {
-	res = 1
-	for (i = p; i > 0; i--)
-		res *= x;
-
-	return res
-}
-
 # generates len samples fft code
 function gen_fft(n) {
 	print "void"
@@ -125,7 +116,6 @@ BEGIN {
 NF != 1 {}
 
 (NF == 1) && ($1 > 1) {
-	n = pow(2, $1)
-	gen_fft(n)
+	gen_fft(2^$1)
 }
 
