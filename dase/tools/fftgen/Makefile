@@ -7,3 +7,5 @@ dase_fft.c: fftgen.awk
 	echo 8 | awk -f $< > dase_fft256.c
 	echo 9 | awk -f $< > dase_fft512.c
 	echo 10 | awk -f $< > dase_fft1024.c
+	echo 11 | awk -f $< > dase_fft2048.c
+

@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <math.h>
 
 #include "dase.h"
 
-#define	N	2048
+#define	N	32
 
 int
 main()
@@ -10,15 +11,14 @@ main()
 	float x[N];
 	int i;
 
-	for (i = 0; i < N; i++)
-		x[i] = 0.0;
-	x[2] = 0.5;
-	x[9] = 0.2;
-	x[14] = 0.15;
+	for (i = 0; i < N; i += 2) {
+		x[i]   = 0.3 * cosf(M_PI/(i+1));
+		x[i+1] = 0.0;
+	}
 
-	dase_fft1024(x, DASE_FFT_INV);
-	for (i = 0; i < N/2; i++)
-		printf("%f\n", x[i*2]);
+	dase_fft_radix4(x, N/2);
+	for (i = 0; i < N; i++)
+		printf("%f\n", x[i]);
 
 	return 0;
 }

@@ -30,6 +30,9 @@ typedef union {
 
 void dase_convol(const float *x, int nx, const float *h, int nh, float *y);
 
+void dase_fft_common(float *x, int n, float inv);
+void dase_fft_radix4(float *x, int n);
+
 void dase_fft8(float *x, float inv);
 void dase_fft16(float *x, float inv);
 void dase_fft32(float *x, float inv);
@@ -38,6 +41,7 @@ void dase_fft128(float *x, float inv);
 void dase_fft256(float *x, float inv);
 void dase_fft512(float *x, float inv);
 void dase_fft1024(float *x, float inv);
+void dase_fft2048(float *x, float inv);
 
 #endif
 
